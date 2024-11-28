@@ -133,3 +133,7 @@ button:active:before {
   outline: none;
   border-bottom: 1px solid #0ef;
 }
+/* Add this to your existing CSS */
+.hidden {
+  display: none !important; /* Force hide without overriding other styles */
+}
