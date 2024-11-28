@@ -23,9 +23,12 @@ const password = document.getElementById("password");
 const password2 = document.getElementById("password2");
 
 form.addEventListener("submit", (e) => {
-  e.preventDefault();
-  validateInputs();
+  e.preventDefault(); // Prevent default submission
+  if (validateInputs()) {
+    form.submit(); // Submit the form manually if validation passes
+  }
 });
+
 const setError = (element, message) => {
   const inputControl = element.parentElement;
   const errorDisplay = inputControl.querySelector(".error");
@@ -51,6 +54,7 @@ const isValidEmail = (email) => {
 };
 
 const validateInputs = () => {
+  let isValid = true; // Tracks overall validity of inputs
   const usernameValue = username.value.trim();
   const emailValue = email.value.trim();
   const passwordValue = password.value.trim();
@@ -58,31 +62,40 @@ const validateInputs = () => {
 
   if (usernameValue === "") {
     setError(username, "Username is required");
+    isValid = false;
   } else {
     setSuccess(username);
   }
 
   if (emailValue === "") {
     setError(email, "Email is required");
+    isValid = false;
   } else if (!isValidEmail(emailValue)) {
     setError(email, "Provide a valid email address");
+    isValid = false;
   } else {
     setSuccess(email);
   }
 
   if (passwordValue === "") {
     setError(password, "Password is required");
+    isValid = false;
   } else if (passwordValue.length < 8) {
-    setError(password, "Password must be at least 8 character.");
+    setError(password, "Password must be at least 8 characters.");
+    isValid = false;
   } else {
     setSuccess(password);
   }
 
   if (password2Value === "") {
     setError(password2, "Please confirm your password");
+    isValid = false;
   } else if (password2Value !== passwordValue) {
-    setError(password2, "Passwords doesn't match");
+    setError(password2, "Passwords don't match");
+    isValid = false;
   } else {
     setSuccess(password2);
   }
+
+  return isValid; // Return the overall validation status
 };
